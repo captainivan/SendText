@@ -32,9 +32,9 @@ const decrypt = (text) => {
 
 const setPost = async (req, res) => {
   try {
-    const { title, body } = req.body;
+    const { title,image,description, body } = req.body;
     const slug = title.toLowerCase().replace(/ /g, '-'); 
-    const newPost = new Post({ title, body, slug });
+    const newPost = new Post({ title,image,description, body, slug });
     await newPost.save();
     res.status(201).json({ message: 'Post created successfully', post: newPost });
   } catch (error) {
@@ -99,4 +99,13 @@ const receiveText = async (req, res) => {
   }
 };
 
-module.exports = { sendText, receiveText, setPost, getPost };
+const getAllPost = async (req, res) => {
+  try{
+    const posts = await Post.find();
+    res.status(201).json(posts);
+  }catch(error){
+    res.status(500).json({messageError:error.message})
+  }
+}
+
+module.exports = { sendText, receiveText, setPost, getPost ,getAllPost };
